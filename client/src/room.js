@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Container from 'react-bootstrap/ListGroup';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {config} from './constants'
 const Chat = require("twilio-chat")
 
 class Room extends React.Component {
@@ -40,7 +41,7 @@ class Room extends React.Component {
         try {
             token = await this.getToken(email)
         } catch {
-            throw new Error("Unable to get token, please reload this page")
+            throw new Error("cant get token")
         }
 
         const client = await Chat.Client.create(token)
@@ -54,9 +55,8 @@ class Room extends React.Component {
             const token = await this.getToken(email)
             client.updateToken(token)
         })
-        // joining a chat
+
         client.on("channelJoined", async (channel) => {
-            // getting list of all messages since this is an existing channel
             const messages = await channel.getMessages()
             this.setState({ messages: messages.items || [] })
         })
@@ -72,15 +72,15 @@ class Room extends React.Component {
                 })
                 this.joinChannel(channel)
             } catch {
-                throw new Error("Unable to create channel, please reload this page")
+                throw new Error("cant create a channel")
             }
         }
     }
 
     getToken = async (email) => {
-        const result = await axios.get(`https://www.iwantadomainplz.com/token/${email}`)
+        const result = await axios.get(`${config.url.API_URL}/token/${email}`)
         const { data } = result
-        console.log("wweee")
+        console.log(`we request from this domoain: ${config.url.API_URL}`)
         return data.token
     }
 

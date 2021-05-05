@@ -29,7 +29,7 @@ load_dotenv(dotenv_path)
 
 # Basic health check - check environment variables have been configured
 # correctly
-@app.route("/api/config")
+@app.route("/config")
 def config():
     return jsonify(
         TWILIO_ACCOUNT_SID=os.environ["TWILIO_ACCOUNT_SID"],
@@ -43,12 +43,12 @@ def config():
     )
 
 
-@app.route("/api/token", methods=["GET"])
+@app.route("/token", methods=["GET"])
 def randomToken():
     return generateToken(fake.user_name())
 
 
-@app.route("/api/token", methods=["POST"])
+@app.route("/token", methods=["POST"])
 def createToken():
     # Get the request json or form data
     content = request.get_json() or request.form
@@ -57,7 +57,7 @@ def createToken():
     return generateToken(identity)
 
 
-@app.route("/api/token/<identity>", methods=["POST", "GET"])
+@app.route("/token/<identity>", methods=["POST", "GET"])
 def token(identity):
     return generateToken(identity)
 
@@ -92,7 +92,7 @@ def generateToken(identity):
 
 
 # Notify - create a device binding from a POST HTTP request
-@app.route("/api/register", methods=["POST"])
+@app.route("/register", methods=["POST"])
 def register():
     # get credentials for environment variables
     account_sid = os.environ["TWILIO_ACCOUNT_SID"]
@@ -121,7 +121,7 @@ def register():
 
 
 # Notify - send a notification from a POST HTTP request
-@app.route("/api/send-notification", methods=["POST"])
+@app.route("/send-notification", methods=["POST"])
 def send_notification():
     # get credentials for environment variables
     account_sid = os.environ["TWILIO_ACCOUNT_SID"]
@@ -145,7 +145,7 @@ def send_notification():
     return jsonify(message="Notification created!")
 
 
-@app.route("/api/<path:path>")
+@app.route("/<path:path>")
 def static_file(path):
     return app.send_static_file(path)
 
@@ -160,7 +160,7 @@ def provision_sync_default_service():
     client.sync.services("default").fetch()
 
 
-# @app.route("/api/", defaults={"path": ""})
+# @app.route("/", defaults={"path": ""})
 # def serve(path):
 #     return app.send_from_directory(app.static_folder, "index.html")
 
