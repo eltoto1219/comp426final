@@ -20,36 +20,36 @@ def snake_case_keys(somedict):
     return snake_case_dict
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path="", static_folder="./build")
 cors = CORS(app)
 fake = Faker()
 dotenv_path = join(dirname(__file__), ".env")
 load_dotenv(dotenv_path)
 
 
-@app.route("/")
-def index():
-    return app.send_static_file("index.html")
+# @app.route("/")
+# def index():
+#     return app.send_static_file("index.html")
 
 
-@app.route("/video/")
-def video():
-    return app.send_static_file("video/index.html")
+# @app.route("/video/")
+# def video():
+#     return app.send_static_file("video/index.html")
 
 
-@app.route("/sync/")
-def sync():
-    return app.send_static_file("sync/index.html")
+# @app.route("/sync/")
+# def sync():
+#     return app.send_static_file("sync/index.html")
 
 
-@app.route("/notify/")
-def notify():
-    return app.send_static_file("notify/index.html")
+# @app.route("/notify/")
+# def notify():
+#     return app.send_static_file("notify/index.html")
 
 
-@app.route("/chat/")
-def chat():
-    return app.send_static_file("chat/index.html")
+# @app.route("/chat/")
+# def chat():
+#     return app.send_static_file("chat/index.html")
 
 
 # Basic health check - check environment variables have been configured
@@ -183,6 +183,11 @@ def provision_sync_default_service():
         os.environ["TWILIO_ACCOUNT_SID"],
     )
     client.sync.services("default").fetch()
+
+
+@app.route("/", defaults={"path": ""})
+def serve(path):
+    return app.send_from_directory(app.static_folder, "index.html")
 
 
 if __name__ == "__main__":

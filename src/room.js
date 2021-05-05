@@ -38,6 +38,9 @@ class Room extends React.Component {
         const { email, room } = state || {}
         let token = ""
 
+
+        console.log("test")
+
         //validation
 
         if (!email || !room) {
@@ -90,8 +93,7 @@ class Room extends React.Component {
     }
 
     getToken = async (email) => {
-        console.log("why oh why oh why")
-        console.log(config.url.API_URL)
+        console.log("do we ever get here")
         const response = await axios.get(`${config.url.API_URL}/token/${email}`)
         const { data } = response
         return data.token
