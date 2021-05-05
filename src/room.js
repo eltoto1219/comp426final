@@ -89,9 +89,16 @@ class Room extends React.Component {
     }
 
     getToken = async (email) => {
-        const response = await axios.get(`http://0.0.0.0:5000/token/${email}`)
-        const { data } = response
-        return data.token
+        const environment = process.env.NODE_ENV === 'production' ? 'production' : 'development';
+        if(environment === "production"){
+            const response = await axios.get(`http://18.215.154.83/token/${email}`)
+            const { data } = response
+            return data.token
+        }else{
+            const response = await axios.get(`http://0.0.0.0:5000/token/${email}`)
+            const { data } = response
+            return data.token
+        }
     }
 
     joinChannel = async (channel) => {

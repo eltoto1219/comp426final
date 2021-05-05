@@ -4,3 +4,4 @@ twilio==6.48.0
 python-dotenv==0.15.0
 inflection==0.3.1
 flask-cors
+gunicorn
