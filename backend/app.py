@@ -20,41 +20,16 @@ def snake_case_keys(somedict):
     return snake_case_dict
 
 
-app = Flask(__name__, static_url_path="", static_folder="./build")
+app = Flask(__name__)
 cors = CORS(app)
 fake = Faker()
 dotenv_path = join(dirname(__file__), ".env")
 load_dotenv(dotenv_path)
 
 
-# @app.route("/")
-# def index():
-#     return app.send_static_file("index.html")
-
-
-# @app.route("/video/")
-# def video():
-#     return app.send_static_file("video/index.html")
-
-
-# @app.route("/sync/")
-# def sync():
-#     return app.send_static_file("sync/index.html")
-
-
-# @app.route("/notify/")
-# def notify():
-#     return app.send_static_file("notify/index.html")
-
-
-# @app.route("/chat/")
-# def chat():
-#     return app.send_static_file("chat/index.html")
-
-
 # Basic health check - check environment variables have been configured
 # correctly
-@app.route("/config")
+@app.route("/api/config")
 def config():
     return jsonify(
         TWILIO_ACCOUNT_SID=os.environ["TWILIO_ACCOUNT_SID"],
@@ -68,12 +43,12 @@ def config():
     )
 
 
-@app.route("/token", methods=["GET"])
+@app.route("/api/token", methods=["GET"])
 def randomToken():
     return generateToken(fake.user_name())
 
 
-@app.route("/token", methods=["POST"])
+@app.route("/api/token", methods=["POST"])
 def createToken():
     # Get the request json or form data
     content = request.get_json() or request.form
@@ -82,7 +57,7 @@ def createToken():
     return generateToken(identity)
 
 
-@app.route("/token/<identity>", methods=["POST", "GET"])
+@app.route("/api/token/<identity>", methods=["POST", "GET"])
 def token(identity):
     return generateToken(identity)
 
@@ -117,7 +92,7 @@ def generateToken(identity):
 
 
 # Notify - create a device binding from a POST HTTP request
-@app.route("/register", methods=["POST"])
+@app.route("/api/register", methods=["POST"])
 def register():
     # get credentials for environment variables
     account_sid = os.environ["TWILIO_ACCOUNT_SID"]
@@ -146,7 +121,7 @@ def register():
 
 
 # Notify - send a notification from a POST HTTP request
-@app.route("/send-notification", methods=["POST"])
+@app.route("/api/send-notification", methods=["POST"])
 def send_notification():
     # get credentials for environment variables
     account_sid = os.environ["TWILIO_ACCOUNT_SID"]
@@ -170,7 +145,7 @@ def send_notification():
     return jsonify(message="Notification created!")
 
 
-@app.route("/<path:path>")
+@app.route("/api/<path:path>")
 def static_file(path):
     return app.send_static_file(path)
 
@@ -185,9 +160,9 @@ def provision_sync_default_service():
     client.sync.services("default").fetch()
 
 
-@app.route("/", defaults={"path": ""})
-def serve(path):
-    return app.send_from_directory(app.static_folder, "index.html")
+# @app.route("/api/", defaults={"path": ""})
+# def serve(path):
+#     return app.send_from_directory(app.static_folder, "index.html")
 
 
 if __name__ == "__main__":
