@@ -90,6 +90,7 @@ class Room extends React.Component {
     }
 
     getToken = async (email) => {
+        console.log(config.url.API_URL)
         const response = await axios.get(`${config.url.API_URL}/token/${email}`)
         const { data } = response
         return data.token
