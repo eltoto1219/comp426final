@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/comp426final/static/css/main.6dea0f05.chunk.css",
-    "main.js": "/comp426final/static/js/main.31e1d292.chunk.js",
-    "main.js.map": "/comp426final/static/js/main.31e1d292.chunk.js.map",
-    "runtime-main.js": "/comp426final/static/js/runtime-main.fe89066f.js",
-    "runtime-main.js.map": "/comp426final/static/js/runtime-main.fe89066f.js.map",
-    "static/js/2.7ae4c00d.chunk.js": "/comp426final/static/js/2.7ae4c00d.chunk.js",
-    "static/js/2.7ae4c00d.chunk.js.map": "/comp426final/static/js/2.7ae4c00d.chunk.js.map",
-    "static/js/3.77a14e58.chunk.js": "/comp426final/static/js/3.77a14e58.chunk.js",
-    "static/js/3.77a14e58.chunk.js.map": "/comp426final/static/js/3.77a14e58.chunk.js.map",
-    "index.html": "/comp426final/index.html",
-    "static/css/main.6dea0f05.chunk.css.map": "/comp426final/static/css/main.6dea0f05.chunk.css.map",
-    "static/js/2.7ae4c00d.chunk.js.LICENSE.txt": "/comp426final/static/js/2.7ae4c00d.chunk.js.LICENSE.txt"
+    "main.css": "https://avmendoza.info/comp426final/static/css/main.6dea0f05.chunk.css",
+    "main.js": "https://avmendoza.info/comp426final/static/js/main.31e1d292.chunk.js",
+    "main.js.map": "https://avmendoza.info/comp426final/static/js/main.31e1d292.chunk.js.map",
+    "runtime-main.js": "https://avmendoza.info/comp426final/static/js/runtime-main.2104c3d6.js",
+    "runtime-main.js.map": "https://avmendoza.info/comp426final/static/js/runtime-main.2104c3d6.js.map",
+    "static/js/2.7ae4c00d.chunk.js": "https://avmendoza.info/comp426final/static/js/2.7ae4c00d.chunk.js",
+    "static/js/2.7ae4c00d.chunk.js.map": "https://avmendoza.info/comp426final/static/js/2.7ae4c00d.chunk.js.map",
+    "static/js/3.77a14e58.chunk.js": "https://avmendoza.info/comp426final/static/js/3.77a14e58.chunk.js",
+    "static/js/3.77a14e58.chunk.js.map": "https://avmendoza.info/comp426final/static/js/3.77a14e58.chunk.js.map",
+    "index.html": "https://avmendoza.info/comp426final/index.html",
+    "static/css/main.6dea0f05.chunk.css.map": "https://avmendoza.info/comp426final/static/css/main.6dea0f05.chunk.css.map",
+    "static/js/2.7ae4c00d.chunk.js.LICENSE.txt": "https://avmendoza.info/comp426final/static/js/2.7ae4c00d.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.fe89066f.js",
+    "static/js/runtime-main.2104c3d6.js",
     "static/js/2.7ae4c00d.chunk.js",
     "static/css/main.6dea0f05.chunk.css",
     "static/js/main.31e1d292.chunk.js"
