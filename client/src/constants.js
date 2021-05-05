@@ -1,6 +1,6 @@
 const prod = {
  url: {
-  API_URL: 'https://iwantadomainplz.com',
+  API_URL: 'https://www.iwantadomainplz.com',
     }
 }
 const dev = {
