@@ -27,9 +27,8 @@ class Login extends React.Component {
     login = () => {
         //console.log(this.props)
         const email = this.state.email;
-        console.log(email)
         if (email !== '') {
-            this.props.history.push("/profile", {email});
+            this.props.history.push("profile", {email});
         }
     }
 
@@ -40,10 +39,9 @@ class Login extends React.Component {
 
 
     render(){
-        const email  = this.state.email;
+        let email  = this.state.email;
         return (
         <>
-        <Navbar {...this.props}/>
         <Container>
             <Card>
                 <Card.Header>
@@ -72,6 +70,7 @@ class Login extends React.Component {
             </Card>
         </Container>
 
+        <Navbar/>
         </>
             )
     }

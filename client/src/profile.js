@@ -21,7 +21,6 @@ class Profile extends React.Component {
             channels: '',
             created: '',
             room: '',
-            newroom: '',
         }
 
 
@@ -30,15 +29,16 @@ class Profile extends React.Component {
     componentDidMount = async () => {
         const { location } = this.props;
         const { state } = location || {};
-        const { email, room } = state || {};
+        const { email } = state || {};
         let token = "";
         let info = ''
-        let newroom = ''
         let name = ''
+        let room = ''
 
 
         if (!email) {
-            this.props.history.replace("/login");
+            this.props.history.push("login");
+            return
         }
 
         try {
@@ -49,32 +49,33 @@ class Profile extends React.Component {
         }
 
         const client = await Chat.Client.create(token)
-
-
         client.on("tokenAboutToExpire", async () => {
             const token = await this.getToken(email)
             client.updateToken(token)
         })
-
         client.on("tokenExpired", async () => {
             const token = await this.getToken(email)
             client.updateToken(token)
         })
 
-
         try {
-            info = await this.getUserInfo(email)
-        } catch {
-            window.location.reload();
-        }
-        try {
-            newroom = await axios.get(`${config.url.API_URL}/random`)
-            this.setState({room: newroom.data})
+            room = await axios.get(`${config.url.API_URL}/random`)
         } catch{
             alert("cannot make room")
         }
-        this.setState({name: email, channels: info.channels, created: info.created,
-            newroom: newroom.data})
+
+        try {
+            info = await this.getUserInfo(email)
+            this.setState({name: email, channels: info.channels, created: info.created,
+                room: room.data})
+
+        } catch {
+            this.setState({name: email,
+                room: room.data})
+
+        }
+
+
 
 
 
@@ -100,13 +101,14 @@ class Profile extends React.Component {
 
 
     createjoin = () => {
-        const { location } = this.props;
-        const { state } = location || {};
-        const { email } = state || {};
-        const { room } = this.state;
-        console.log(this.props.history)
+        // const { location } = this.props;
+        // const { state } = location || {};
+        let { location } = this.props;
+        let { state } = location || {};
+        let { email} = state || {};
+        const room = this.state.room
         if (email && room) {
-            this.props.history.push("chat", { room, email });
+            this.props.history.push("chat", { email, room});
         }
     }
 
@@ -115,7 +117,6 @@ class Profile extends React.Component {
     render() {
         return (
         <>
-        <Navbar {...this.props}/>
         <Container>
             <Card>
                 <Card.Header>
@@ -142,7 +143,7 @@ class Profile extends React.Component {
 
                             <br></br>
                             <br></br>
-                            <Button variant="primary" onClick={this.createjoin}>Create/Join</Button>
+                            <Button variant="primary" onClick={this.createjoin} >Create/Join</Button>
 
                         </Card.Body>
 
@@ -150,6 +151,8 @@ class Profile extends React.Component {
                 </Card.Body>
             </Card>
         </Container>
+
+        <Navbar {...this.props}/>
         </>
         )
     }

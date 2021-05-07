@@ -8,32 +8,47 @@ import Col from 'react-bootstrap/Col';
 
 class Navbar extends React.Component {
     constructor(props) {
-
         super(props)
-        this.state = {email: this.email}
-        this.pushEmail = this.pushEmail.bind(this)
     }
 
-    pushEmail = () => {
-        const { location } = this.props
-        const { state } = location || {}
-        const { email } = state || {}
-        this.props.history.replace("/profile", {email})
+    componentWillUnmount(){
     }
+
+
+    profile = () => {
+        let { location } = this.props
+        let { state } = location || {}
+        let { email } = state || {}
+        const room = ''
+
+        this.componentWillUnmount()
+        this.props.history.replace("profile", {email, room})
+    }
+
+    logout = () => {
+        let { location } = this.props
+        let { state } = location || {}
+        let { email, room} = state || {}
+        room = ''
+        email = ''
+        this.componentWillUnmount()
+        this.props.history.push("login")
+    }
+
 
     render(){
-        const { location } = this.props
-        const { state } = location || {}
-        const { email } = state || {}
+        let { location } = this.props
+        let { state } = location || {}
+        let { email } = state || {}
         if(email){
             return (<>
                 <br></br>
                 <Row>
                     <Col  xs={8} md={2} >
-                        <Link to="/login">Logout</Link>
+                        <Button variant="link" onClick={this.logout}>Logout</Button>
                     </Col>
                     <Col  xs={8} md={2} >
-                        <Button variant="link" onClick={this.pushEmail} to="/profile">Profile</Button>
+                        <Button variant="link" onClick={this.profile}>Profile</Button>
                     </Col>
                 </Row>
                 <hr />

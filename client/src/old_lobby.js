@@ -17,7 +17,7 @@ class Lobby extends React.Component {
         //console.log(this.props)
         const { email, room } = this.state;
         if (email && room) {
-            this.props.history.push("chat", { room, email });
+            this.props.history.push("chat", { email, room});
         }
     }
 

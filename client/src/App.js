@@ -14,7 +14,7 @@ function App() {
                     <Route path="/login" component={Login}/>
                     <Route path="/chat" component={Room}/>
                     <Route path="/profile" component={Profile}/>
-                    {/* <Route exact path="/">{<Redirect to="/login" />}</Route> */}
+                    <Route exact path="/">{<Redirect to="/login" />}</Route>
                 </Switch>
             </BrowserRouter>
         </div>

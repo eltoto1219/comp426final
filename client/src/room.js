@@ -16,23 +16,26 @@ class Room extends React.Component {
         super(props)
 
         this.state = {
-            text: "",
-            messages: [],
             loading: false,
+            text: "",
+            messages: [1],
             channel: null,
         }
+
+        this.componentDidMount = this.componentDidMount.bind(this)
 
     }
 
     componentDidMount = async () => {
-        const { location } = this.props
-        const { state } = location || {}
-        const { email, room } = state || {}
+        let { location } = this.props
+        let { state } = location || {}
+        let { room , email} = state || {}
 
         //validation
 
         if (!email || !room) {
-            this.props.history.replace("/")
+            this.props.history.push("/")
+            return
         }
 
         //token stuff
@@ -45,49 +48,67 @@ class Room extends React.Component {
             throw new Error("cant get token")
         }
 
-        const client = await Chat.Client.create(token)
+        let client = await Chat.Client.create(token)
+
+
+
+        let channels = await client.getSubscribedChannels()
 
         client.on("tokenAboutToExpire", async () => {
-            const token = await this.getToken(email)
+            let token = await this.getToken(email)
             client.updateToken(token)
         })
 
         client.on("tokenExpired", async () => {
-            const token = await this.getToken(email)
+            let token = await this.getToken(email)
             client.updateToken(token)
         })
 
         client.on("channelJoined", async (channel) => {
-            const messages = await channel.getMessages()
-            this.setState({ messages: messages.items || [] })
+            this.joinChannel(channel)
+
+
         })
 
+
         try {
-            const channel = await client.getChannelByUniqueName(room)
+            let channel = await client.getChannelByUniqueName(room)
             this.joinChannel(channel)
+
         } catch(err) {
             try {
-                const channel = await client.createChannel({
+                let channel = await client.createChannel({
                     uniqueName: room,
                     friendlyName: room,
                 })
+
                 this.joinChannel(channel)
+
+
             } catch {
                 throw new Error("cant create a channel")
             }
         }
+
+
+
     }
 
     getToken = async (email) => {
-        const result = await axios.get(`${config.url.API_URL}/token/${email}`)
-        const { data } = result
-        console.log(`we request from this domoain: ${config.url.API_URL}`)
+        let result = await axios.get(`${config.url.API_URL}/token/${email}`)
+        let { data } = result
         return data.token
     }
 
     joinChannel = async (channel) => {
         if (channel.channelState.status !== "joined") {
             await channel.join()
+        }else if(channel.channelState.status === "joined"){
+            channel.on("messageAdded", this.handleMessageAdded)
+            let b = await channel.getMessages()
+            this.setState({messages: b.items})
+        }else{
+            console.log(channel.channelState.status)
         }
 
         this.setState({
@@ -95,12 +116,14 @@ class Room extends React.Component {
             loading: false
         })
 
-        channel.on("messageAdded", this.handleMessageAdded)
+
+
+
     }
 
 
     handleMessageAdded = (message) => {
-        const { messages } = this.state
+        let { messages } = this.state
         this.setState({
             messages: [...messages, message],
         },
@@ -109,7 +132,7 @@ class Room extends React.Component {
 
 
     sendMessage = () => {
-        const { text, channel } = this.state
+        let { text, channel } = this.state
         if (text) {
             this.setState({ loading: true })
             channel.sendMessage(String(text).trim())
@@ -118,14 +141,15 @@ class Room extends React.Component {
     }
 
     render() {
-      const { loading, text, messages, channel } = this.state
-      const { location } = this.props
-      const { state } = location || {}
-      const { email, room } = state || {}
+        let { loading, text, messages, channel } = this.state
+        let { location } = this.props
+        let { state } = location || {}
+        let { email, room } = state || {}
+
 
       return (
+
         <>
-            <Navbar {...this.props}/>
         <Container>
             <Card>
                 <Card.Header>
@@ -137,6 +161,7 @@ class Room extends React.Component {
                         <ListGroup>{messages && messages.map((message) =>
                         <Message
                                 key={message.index}
+                                //key={new Date().getTime()}
                                 message={message}
                                 email={email}/>
                         )}</ListGroup>
@@ -171,12 +196,14 @@ class Room extends React.Component {
                 </Card.Body>
             </Card>
         </Container>
+
+            <Navbar {...this.props}/>
         </>
       )
     }
 }
 
-const styles = {
+let styles = {
     message: {display: "block", width: "100%", borderRadius: 12, padding: -4}
 
 };
