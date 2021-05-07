@@ -1,11 +1,12 @@
 import os
+import sqlite3
 import string
 from os.path import dirname, join
 
 import requests
 from dotenv import load_dotenv
 from faker import Faker
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, g, jsonify, render_template, request
 from flask_cors import CORS
 # from flask.ext.cors import CORS
 from inflection import underscore
@@ -28,6 +29,50 @@ cors = CORS(app)
 fake = Faker()
 dotenv_path = join(dirname(__file__), ".env")
 load_dotenv(dotenv_path)
+
+
+DATABASE = "database.db"
+
+if not os.path.exists(DATABASE):
+    os.mknod(DATABASE)
+cur = sqlite3.connect("database.db").cursor()
+cur.execute("CREATE TABLE IF NOT EXISTS ONLINE( name text PRIMARY KEY );")
+cur.close()
+
+
+def get_db():
+    db = getattr(g, "_database", None)
+    if db is None:
+        db = g._database = sqlite3.connect(DATABASE)
+    return db
+
+
+@app.teardown_appcontext
+def close_connection(exception):
+    db = getattr(g, "_database", None)
+    if db is not None:
+        db.close()
+
+
+@app.route("/auth/<identity>", methods=["POST"])
+def database(identity):
+    with get_db() as cur:
+        data = request.json
+        sql = """ INSERT OR REPLACE INTO ONLINE(name) VALUES(?)"""
+        cur.execute(sql, ([data["name"]]))
+        cur.commit()
+
+    return jsonify(data)
+
+
+@app.route("/nusers", methods=["GET"])
+def getUsers():
+    users = []
+    with get_db() as cur:
+        for u in cur.execute("select * from online"):
+            users.append(u[0])
+
+    return str(len(users))
 
 
 @app.route("/random", methods=["GET"])

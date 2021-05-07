@@ -12,6 +12,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {config} from './constants'
 import Navbar from './navbar'
 const Chat = require("twilio-chat")
+//var axios = require('axios');
 
 class Profile extends React.Component {
     constructor(props) {
@@ -64,19 +65,33 @@ class Profile extends React.Component {
             alert("cannot make room")
         }
 
+        const res = await axios.post(`${config.url.API_URL}/auth/${email}`,{name: email}).then((r)=>{
+            console.log("suc")
+            return r
+        }).catch((e)=>{
+            console.log("failure", e )
+        })
+
+
+        const users = await axios.get(`${config.url.API_URL}/nusers`).then(r => {
+            return r.data
+        }).catch(e => {
+            return "?"
+        })
+        console.log("WWEEEE", users)
+
+
+
         try {
             info = await this.getUserInfo(email)
             this.setState({name: email, channels: info.channels, created: info.created,
-                room: room.data})
+                room: room.data, users: users})
 
         } catch {
             this.setState({name: email,
                 room: room.data})
 
         }
-
-
-
 
 
 
@@ -124,9 +139,11 @@ class Profile extends React.Component {
                 <Card.Header>
                     You Are: {this.state.name}
                     <br/>
-                    You are in {this.state.channels} channels
+                    You Exist in {this.state.channels} channels
                     <br/>
-                    You were born at {this.state.created}
+                    You Were born at {this.state.created}
+                    <br/>
+                    There are {this.state.users} that use this platform
                 </Card.Header>
                 <Card.Body>
                     <Card>
