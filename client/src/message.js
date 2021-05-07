@@ -1,13 +1,7 @@
 import React from "react";
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import ListGroup from 'react-bootstrap/ListGroup';
-
-function messageColor(isOwnMessage) {
-  return { backgroundColor: isOwnMessage ? 'red' : 'blue' };
-}
 
 
 class Message extends React.Component {
@@ -45,7 +39,6 @@ const styles = {
   }),
     author: (isOwnMessage) =>({
         flexDirection: "column",
-        fontSize: 10,
         fontSize: 8,
  //       float: isOwnMessage ? "right" : "left",
         color: "white",

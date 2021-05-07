@@ -8,6 +8,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Container from 'react-bootstrap/ListGroup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {config} from './constants'
+import Navbar from './navbar'
 const Chat = require("twilio-chat")
 
 class Room extends React.Component {
@@ -124,6 +125,7 @@ class Room extends React.Component {
 
       return (
         <>
+            <Navbar {...this.props}/>
         <Container>
             <Card>
                 <Card.Header>
