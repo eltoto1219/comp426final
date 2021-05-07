@@ -150,6 +150,7 @@ class Room extends React.Component {
       return (
 
         <>
+        <Navbar {...this.props}/>
         <Container>
             <Card>
                 <Card.Header>
@@ -197,7 +198,6 @@ class Room extends React.Component {
             </Card>
         </Container>
 
-            <Navbar {...this.props}/>
         </>
       )
     }

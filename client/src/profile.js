@@ -117,6 +117,8 @@ class Profile extends React.Component {
     render() {
         return (
         <>
+
+        <Navbar {...this.props}/>
         <Container>
             <Card>
                 <Card.Header>
@@ -152,7 +154,6 @@ class Profile extends React.Component {
             </Card>
         </Container>
 
-        <Navbar {...this.props}/>
         </>
         )
     }

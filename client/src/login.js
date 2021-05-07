@@ -42,6 +42,7 @@ class Login extends React.Component {
         let email  = this.state.email;
         return (
         <>
+        <Navbar/>
         <Container>
             <Card>
                 <Card.Header>
@@ -70,7 +71,6 @@ class Login extends React.Component {
             </Card>
         </Container>
 
-        <Navbar/>
         </>
             )
     }
